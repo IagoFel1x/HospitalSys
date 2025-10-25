@@ -1,4 +1,4 @@
-package br.com.hospital.model.entidade;
+package model;
 
 // Entidade baseada na tabela 'Medico'
 public class Medico {
