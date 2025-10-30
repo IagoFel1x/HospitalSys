@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.dao.interfaces;
 
-/**
- *
- * @author ADM
- */
-public class PlanoDeSaudeDAO {
-    
+import Model.PlanoDeSaude;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface PlanoDeSaudeDAO {
+    void salvar(PlanoDeSaude plano) throws SQLException;
+    void atualizar(PlanoDeSaude plano) throws SQLException;
+    void deletar(int id) throws SQLException;
+    PlanoDeSaude buscarPorId(int id) throws SQLException;
+    ArrayList<PlanoDeSaude> listarTodos() throws SQLException;
 }

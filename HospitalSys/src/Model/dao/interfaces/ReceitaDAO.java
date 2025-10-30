@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.dao.interfaces;
 
-/**
- *
- * @author ADM
- */
-public class ReceitaDAO {
-    
+import Model.Receita;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface ReceitaDAO {
+    void salvar(Receita receita) throws SQLException;
+    ArrayList<Receita> listarPorDiagnostico(int idDiagnostico) throws SQLException;
 }

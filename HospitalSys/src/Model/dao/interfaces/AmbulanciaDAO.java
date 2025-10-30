@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.dao.interfaces;
 
-/**
- *
- * @author ADM
- */
-public class AmbulanciaDAO {
-    
+import Model.Ambulancia;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface AmbulanciaDAO {
+    void salvar(Ambulancia ambulancia) throws SQLException;
+    void atualizar(Ambulancia ambulancia) throws SQLException;
+    void deletar(int id) throws SQLException;
+    Ambulancia buscarPorId(int id) throws SQLException;
+    ArrayList<Ambulancia> listarTodos() throws SQLException;
 }

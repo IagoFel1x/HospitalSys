@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.dao.interfaces;
 
-/**
- *
- * @author ADM
- */
-public class FichaMedicaDAO {
+import Model.FichaMedica;
+import java.sql.SQLException;
+
+public interface FichaMedicaDAO {
+    void salvar(FichaMedica ficha) throws SQLException;
+    void atualizar(FichaMedica ficha) throws SQLException;
+    FichaMedica buscarPorId(int id) throws SQLException;
     
+    // Método Chave (Relação 1:1)
+    FichaMedica buscarPorPaciente(int idPaciente) throws SQLException;
 }
