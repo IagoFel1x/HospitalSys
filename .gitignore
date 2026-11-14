@@ -1,0 +1,17 @@
+# Maven / build
+target/
+*.class
+*.jar
+
+# IntelliJ
+.idea/
+*.iml
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+
+# Sistema
+.DS_Store
+Thumbs.db
