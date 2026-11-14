@@ -1,4 +1,3 @@
-// ConexaoBD.java
 package conexao;
 
 import java.sql.Connection;
@@ -7,25 +6,41 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ConexaoBD {
+/**
+ * Fábrica de conexões com o MySQL. As credenciais vêm de variáveis de
+ * ambiente, para que nenhuma senha fique gravada no código-fonte:
+ *
+ * <ul>
+ *   <li>{@code HOSPITAL_DB_URL} (padrão: jdbc:mysql://localhost:3306/hospital_db)</li>
+ *   <li>{@code HOSPITAL_DB_USER} (padrão: root)</li>
+ *   <li>{@code HOSPITAL_DB_PASSWORD} (padrão: vazia)</li>
+ * </ul>
+ */
+public final class ConexaoBD {
 
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/hospital_db";
-    private static final String USUARIO = "root"; // Mude para seu usuário
-    private static final String SENHA = "(BolGie2019)*";   // Mude para sua senha
+    private static final String URL = lerVariavel("HOSPITAL_DB_URL", "jdbc:mysql://localhost:3306/hospital_db");
+    private static final String USUARIO = lerVariavel("HOSPITAL_DB_USER", "root");
+    private static final String SENHA = lerVariavel("HOSPITAL_DB_PASSWORD", "");
+
+    private ConexaoBD() {
+    }
+
+    private static String lerVariavel(String nome, String padrao) {
+        String valor = System.getenv(nome);
+        return (valor == null || valor.isBlank()) ? padrao : valor;
+    }
 
     public static Connection getConexao() {
         try {
-            Class.forName(DRIVER);
             return DriverManager.getConnection(URL, USUARIO, SENHA);
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException("Erro na conexão: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro na conexão com " + URL + ": " + e.getMessage(), e);
         }
     }
 
     public static void fecharConexao(Connection con) {
         try {
-            if (con != null) {
+            if (con != null && !con.isClosed()) {
                 con.close();
             }
         } catch (SQLException e) {
@@ -33,8 +48,8 @@ public class ConexaoBD {
         }
     }
 
+    /** Fecha o statement e depois a conexão (ordem inversa da abertura). */
     public static void fecharConexao(Connection con, PreparedStatement stmt) {
-        fecharConexao(con);
         try {
             if (stmt != null) {
                 stmt.close();
@@ -42,10 +57,11 @@ public class ConexaoBD {
         } catch (SQLException e) {
             System.err.println("Erro ao fechar PreparedStatement: " + e.getMessage());
         }
+        fecharConexao(con);
     }
 
+    /** Fecha o result set, o statement e por fim a conexão. */
     public static void fecharConexao(Connection con, PreparedStatement stmt, ResultSet rs) {
-        fecharConexao(con, stmt);
         try {
             if (rs != null) {
                 rs.close();
@@ -53,5 +69,6 @@ public class ConexaoBD {
         } catch (SQLException e) {
             System.err.println("Erro ao fechar ResultSet: " + e.getMessage());
         }
+        fecharConexao(con, stmt);
     }
 }
